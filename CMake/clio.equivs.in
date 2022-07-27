@@ -1,5 +1,5 @@
 Package: clio
-Version: 1.0.0
+Version: ${clio_version}
 Maintainer: Ripple <support@ripple.com>
 Architecture: all
 Depends: clio-server

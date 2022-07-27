@@ -32,4 +32,6 @@ endif()
 
 set(CPACK_STRIP_FILES TRUE)
 
+configure_file("${CMAKE_SOURCE_DIR}/CMake/clio.equivs.in" "${CMAKE_BINARY_DIR}/clio.equivs")
+
 include(CPack)
