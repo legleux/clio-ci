@@ -6,18 +6,25 @@ include(ExternalProject)
 set(CLIO_PROJECT_NAME clio)
 set(CPACK_PACKAGE_INSTALL_DIRECTORY /opt/clio) # NOTE: could this be overridden somewhere?
 
-if(NOT DEFINED SRC_DIR)
-    message(FATAL_ERROR "Must provide Clio source as -DSRC_DIR=<Clio source dir>")
-elseif(DEFINED ENV{CLIO_DIR})
-    set(SRC_DIR ${CLIO_DIR})
+if(DEFINED ENV{CLIO_ROOT} OR DEFINED CLIO_ROOT)
+    set(CLIO_ROOT $ENV{CLIO_ROOT})
+else()
+    message(FATAL_ERROR "Must provide Clio source as -DCLIO_ROOT=<Clio source dir> or as an environment variable.")
 endif()
 
 # TODO: packaging.cmake must be configure_file()'d to have the same
 # CPACK_PACKAGE_INSTALL_DIRECTORY between them...
-configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst")
+configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst" @ONLY)
+
+if(${CMAKE_VERSION} VERSION_LESS "3.21")
+    get_filename_component(${CLIO_ROOT} CLIO_ROOT CMAKE_ABSOLUTE_DESTINATION_FILES)
+else()
+    file(REAL_PATH  ${CLIO_ROOT} CLIO_ROOT EXPAND_TILDE)
+endif()
+
 ExternalProject_Add(${CLIO_PROJECT_NAME}
-    DOWNLOAD_COMMAND cp -r ${SRC_DIR}/ .
-    SOURCE_DIR clio-prefix/src/clio_src
+    DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CLIO_ROOT} .
+    SOURCE_DIR clio-prefix/src
     # TODO: make the patch command use a script in case it gets more complicated
     PATCH_COMMAND cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake .
     CMAKE_ARGS
@@ -27,12 +34,7 @@ ExternalProject_Add(${CLIO_PROJECT_NAME}
     INSTALL_COMMAND ""
 )
 
-ExternalProject_Get_property(${CLIO_PROJECT_NAME} SOURCE_DIR)
 ExternalProject_Get_property(${CLIO_PROJECT_NAME} BINARY_DIR)
-message("***********************************")
-message("** SOURCE_DIR: ${SOURCE_DIR}")
-message("** BINARY_DIR: ${BINARY_DIR}")
-message("***********************************")
 
 add_custom_command (OUTPUT CLIO_PACKAGE
     COMMAND cpack --debug --verbose --config ${BINARY_DIR}/CPackConfig.cmake
