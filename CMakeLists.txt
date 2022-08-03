@@ -17,7 +17,7 @@ endif()
 configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst" @ONLY)
 
 if(${CMAKE_VERSION} VERSION_LESS "3.21")
-    get_filename_component(${CLIO_ROOT} CLIO_ROOT CMAKE_ABSOLUTE_DESTINATION_FILES)
+    get_filename_component(CLIO_ROOT ${CLIO_ROOT} ABSOLUTE)
 else()
     file(REAL_PATH  ${CLIO_ROOT} CLIO_ROOT EXPAND_TILDE)
 endif()
