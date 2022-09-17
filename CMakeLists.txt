@@ -12,9 +12,15 @@ else()
     message(FATAL_ERROR "Must provide Clio source as -DCLIO_ROOT=<Clio source dir> or as an environment variable.")
 endif()
 
+file(STRINGS /etc/os-release OS_ID REGEX "^ID=")
+string(REGEX MATCHALL "=\"?([a-zA-Z]*)\"?" OUT ${OS_ID})
+set(OS ${CMAKE_MATCH_1})
+
 # TODO: packaging.cmake must be configure_file()'d to have the same
 # CPACK_PACKAGE_INSTALL_DIRECTORY between them...
-configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst" @ONLY)
+if(${OS} STREQUAL "debian")
+    configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst" @ONLY)
+endif()
 
 if(${CMAKE_VERSION} VERSION_LESS "3.21")
     get_filename_component(CLIO_ROOT ${CLIO_ROOT} ABSOLUTE)
@@ -25,7 +31,6 @@ endif()
 ExternalProject_Add(${CLIO_PROJECT_NAME}
     DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CLIO_ROOT} .
     SOURCE_DIR clio-prefix/src
-    # TODO: make the patch command use a script in case it gets more complicated
     PATCH_COMMAND cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake .
     CMAKE_ARGS
         -DPACKAGING=1
@@ -42,8 +47,10 @@ add_custom_command (OUTPUT CLIO_PACKAGE
 add_custom_target(package ALL DEPENDS CLIO_PACKAGE)
 add_dependencies(package clio)
 
-add_custom_command (OUTPUT CLIO_VIRTUAL_PACKAGE
-    COMMAND equivs-build ${BINARY_DIR}/clio.equivs
-)
-add_custom_target(virtual_package ALL DEPENDS CLIO_VIRTUAL_PACKAGE)
-add_dependencies(virtual_package package)
+if(${OS} STREQUAL "debian")
+    add_custom_command (OUTPUT CLIO_VIRTUAL_PACKAGE
+        COMMAND equivs-build ${BINARY_DIR}/clio.equivs
+    )
+    add_custom_target(virtual_package ALL DEPENDS CLIO_VIRTUAL_PACKAGE)
+    add_dependencies(virtual_package package)
+endif()
