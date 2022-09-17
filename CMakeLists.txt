@@ -37,13 +37,13 @@ ExternalProject_Add(${CLIO_PROJECT_NAME}
 ExternalProject_Get_property(${CLIO_PROJECT_NAME} BINARY_DIR)
 
 add_custom_command (OUTPUT CLIO_PACKAGE
-    COMMAND cpack --debug --verbose --config ${BINARY_DIR}/CPackConfig.cmake
+    COMMAND cpack -G ${pkg} --debug --verbose --config ${BINARY_DIR}/CPackConfig.cmake
 )
 add_custom_target(package ALL DEPENDS CLIO_PACKAGE)
 add_dependencies(package clio)
 
-add_custom_command (OUTPUT CLIO_VIRTUAL_PACKAGE
-    COMMAND equivs-build ${BINARY_DIR}/clio.equivs
-)
-add_custom_target(virtual_package ALL DEPENDS CLIO_VIRTUAL_PACKAGE)
-add_dependencies(virtual_package package)
+# add_custom_command (OUTPUT CLIO_VIRTUAL_PACKAGE
+#     COMMAND equivs-build ${BINARY_DIR}/clio.equivs
+# )
+# add_custom_target(virtual_package ALL DEPENDS CLIO_VIRTUAL_PACKAGE)
+# add_dependencies(virtual_package package)
