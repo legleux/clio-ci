@@ -6,6 +6,10 @@ set(CPACK_PACKAGE_VENDOR "XRPLF")
 # set(CPACK_PACKAGE_CONTACT "me")
 # set(CPACK_PACKAGE_VENDOR "My Company")
 
+message(STATUS "*****************************")
+message(STATUS "Git commit: ${GIT_COMMIT_HASH}")
+message(STATUS "*****************************")
+
 set(CPACK_SET_DESTDIR true) # defaults to /usr otherwise
 set(CPACK_INSTALL_PREFIX /opt/clio) # the only one that seems to work
 
@@ -17,7 +21,7 @@ string(REGEX MATCHALL "([0-9]+).([0-9]+).([0-9]+)-?([A-Za-z0-9].*)?" OUT ${clio_
 set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_MATCH_1})
 set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_MATCH_2})
 set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_MATCH_3})
-set(PRE_RELEASE_VERSION ${CMAKE_MATCH_4}-${CLIO_GIT_COMMIT_HASH})
+set(PRE_RELEASE_VERSION ${CMAKE_MATCH_4})
 
 if(${OS} STREQUAL "debian")
     set(CPACK_GENERATOR "DEB")
