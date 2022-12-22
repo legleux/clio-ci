@@ -6,7 +6,7 @@ When a pull-request or push is made to the Clio repo, the Action for building th
 The current pipeline lints the Clio source with clang-format, builds the `clio_server`, `clio_tests` and clio packages then runs the `clio_tests` executable. The `clio_server` executable is provided by a `clio_server` package while the `clio` package provides clio_server with a [`rippled`](https://github.com/XRPLF/ripple.git) configured to work with the server.
 Packages are are currently only available as apt packages for Debian based systems.
 
-The build is performed using GCC-11 on Ubuntu 20.04 requiring the [clio dependencies](https://github.com/XRPLF/clio#building) and `equivs-build`
+The build is performed using GCC-11 on Ubuntu 20.04 requiring the [clio dependencies](https://github.com/XRPLF/clio#building).
 
 Packages can be installed by adding Ripple's gpg key and deb repo and updating apt's sources
 

@@ -1,7 +1,0 @@
-Package: clio
-Version: ${clio_version}
-Maintainer: Ripple <support@ripple.com>
-Architecture: all
-Depends: clio-server
-Pre-Depends: rippled
-Description: Clio API server with rippled configured

@@ -46,11 +46,3 @@ add_custom_command (OUTPUT CLIO_PACKAGE
 )
 add_custom_target(package ALL DEPENDS CLIO_PACKAGE)
 add_dependencies(package clio)
-
-if(${OS} STREQUAL "debian")
-    add_custom_command (OUTPUT CLIO_VIRTUAL_PACKAGE
-        COMMAND equivs-build ${BINARY_DIR}/clio.equivs
-    )
-    add_custom_target(virtual_package ALL DEPENDS CLIO_VIRTUAL_PACKAGE)
-    add_dependencies(virtual_package package)
-endif()
