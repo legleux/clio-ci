@@ -31,7 +31,7 @@ if(${OS} STREQUAL "debian")
     set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://github.com/XRPLF/clio")
     set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "rippled")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ripple Labs Inc. <support@ripple.com>")
-    set(CPACK_DEBIAN_FILE_NAME clio-${CPACK_PACKAGE_FILE_NAME}.deb)
+    set(CPACK_DEBIAN_FILE_NAME ${CPACK_PACKAGE_FILE_NAME}.deb)
 
 elseif(${OS} STREQUAL "centos")
     set(CPACK_GENERATOR "RPM")
