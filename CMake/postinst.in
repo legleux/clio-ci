@@ -15,12 +15,9 @@ case "$1" in
         chown -R $USER_NAME:$GROUP_NAME /var/log/clio/
         chmod 755 /var/log/clio/
         RIPD_CONF="/opt/ripple/etc/rippled.cfg"
-        ln -s /opt/clio/etc/config.json /etc/opt/clio/config.json
-        ln -s /opt/clio/bin/clio_server /usr/local/bin/clio_server
-        if [ -f "$RIPD_CONF" ]; then
-            LINES_TO_REPLACE=$(grep -n -A3 "^#\[port_g" $RIPD_CONF | grep -oP "^\d+" | sed -n '1p;$p' | awk '{ ORS = (NR%2 ? "," : RS) } 1')
-            sed -i "${LINES_TO_REPLACE}s/^#//" $RIPD_CONF
-        fi
+        mkdir -p /etc/opt/clio/
+        ln -sf /opt/clio/etc/config.json /etc/opt/clio/config.json
+        ln -sf /opt/clio/bin/clio_server /usr/local/bin/clio_server
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
