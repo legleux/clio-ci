@@ -35,7 +35,7 @@ ExternalProject_Add(${CLIO_PROJECT_NAME}
     CMAKE_ARGS
         -DPACKAGING=1
         -DCMAKE_BUILD_TYPE=Release
-    BUILD_COMMAND cmake --build . --parallel $(nproc)
+    BUILD_COMMAND cmake --build . --parallel $(echo "$(nproc) - 2" | bc)
     INSTALL_COMMAND ""
 )
 
