@@ -17,12 +17,14 @@ else()
     file(REAL_PATH  ${CLIO_ROOT} CLIO_ROOT EXPAND_TILDE)
 endif()
 
-add_custom_target (package
-    docker run --rm -it
-        -v ${CMAKE_CURRENT_SOURCE_DIR}:/clio
-        -v ${CMAKE_CURRENT_SOURCE_DIR}/clio_packages:/clio/clio/build/packages
-        clio-packager-built:latest
-        /clio/clio/CMake/packaging/conan_build_clio.sh
+add_custom_target (package ALL
+    cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake/packaging ${CMAKE_CURRENT_SOURCE_DIR}/clio/CMake/packaging
+    COMMAND
+        docker run --rm -it
+            -v ${CMAKE_CURRENT_SOURCE_DIR}:/clio
+            -v ${CMAKE_CURRENT_SOURCE_DIR}/clio_packages:/clio/clio/build/packages
+            legleux/clio-packager-built:latest
+            /clio/clio/CMake/packaging/conan_build_clio.sh
     # WORKING_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/Builds/containers
 
 )
