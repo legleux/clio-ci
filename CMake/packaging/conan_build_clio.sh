@@ -8,7 +8,7 @@ SRC_DIR=clio
 BUILD_DIR="${SRC_DIR}/build"
 BUILD_CONFIG=Release
 TESTS=False
-NPROC=20
+NPROC=4
 PACKAGING=True
 
 #conan export external/snappy snappy/1.1.10@
