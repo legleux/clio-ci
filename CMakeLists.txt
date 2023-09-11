@@ -18,7 +18,7 @@ else()
 endif()
 
 add_custom_target (package ALL
-    cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake/packaging ${CMAKE_CURRENT_SOURCE_DIR}/clio/CMake/packaging
+    cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake/packaging ${CMAKE_CURRENT_SOURCE_DIR}/clio/CMake
     COMMAND
         docker run --rm -it
             -v ${CMAKE_CURRENT_SOURCE_DIR}:/clio

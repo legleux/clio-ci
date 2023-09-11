@@ -4,7 +4,7 @@
 # set -o nounset
 # set -o xtrace
 
-SRC_DIR=clio
+SRC_DIR=/clio/clio
 BUILD_DIR="${SRC_DIR}/build"
 BUILD_CONFIG=Release
 TESTS=False
@@ -18,7 +18,7 @@ pushd ${SRC_DIR} && git config --global safe.directory "*" && popd
 # TODO: check if remote exists before adding
 conan remote add --insert 0 conan-non-prod http://18.143.149.228:8081/artifactory/api/conan/conan-non-prod || true
 
-# cd ${SRC_DIR}
+cd ${SRC_DIR}
 conan install ${SRC_DIR} \
     --build missing \
     --install-folder ${BUILD_DIR} \
