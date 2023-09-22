@@ -11,20 +11,12 @@ if(${OS} STREQUAL "debian")
     configure_file("CMake/postinst.in" "${CMAKE_SOURCE_DIR}/CMake/postinst" @ONLY)
 endif()
 
-if(${CMAKE_VERSION} VERSION_LESS "3.21")
-    get_filename_component(CLIO_ROOT ${CLIO_ROOT} ABSOLUTE)
-else()
-    file(REAL_PATH  ${CLIO_ROOT} CLIO_ROOT EXPAND_TILDE)
-endif()
 
 add_custom_target (package ALL
-    cp -r ${CMAKE_CURRENT_SOURCE_DIR}/CMake/packaging ${CMAKE_CURRENT_SOURCE_DIR}/clio/CMake
+        ${CMAKE_SOURCE_DIR}/prep.sh ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/clio
     COMMAND
         docker run --rm -it
-            -v ${CMAKE_CURRENT_SOURCE_DIR}:/clio
-            -v ${CMAKE_CURRENT_SOURCE_DIR}/clio_packages:/clio/clio/build/packages
+            -v ${CMAKE_CURRENT_SOURCE_DIR}:/clio-packages
             legleux/clio-packager-built:latest
-            /clio/clio/CMake/packaging/conan_build_clio.sh
-    # WORKING_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/Builds/containers
-
+            /clio-packages/clio/CMake/packaging/conan_build_clio.sh
 )

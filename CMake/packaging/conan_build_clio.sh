@@ -4,15 +4,12 @@
 # set -o nounset
 # set -o xtrace
 
-SRC_DIR=/clio/clio
+SRC_DIR=/clio-packages/clio
 BUILD_DIR="${SRC_DIR}/build"
 BUILD_CONFIG=Release
 TESTS=False
-NPROC=4
-PACKAGING=True
+NPROC=$(($(nproc)-2))
 
-#conan export external/snappy snappy/1.1.10@
-echo "I am in $PWD"
 pushd ${SRC_DIR} && git config --global safe.directory "*" && popd
 
 # TODO: check if remote exists before adding
@@ -29,7 +26,6 @@ conan install ${SRC_DIR} \
 cmake \
     -S ${SRC_DIR} \
     -B ${BUILD_DIR} \
-    -Dpackaging=${PACKAGING} \
     -DCMAKE_TOOLCHAIN_FILE:FILEPATH=build/generators/conan_toolchain.cmake \
     -DCMAKE_BUILD_TYPE=${BUILD_CONFIG}
 
